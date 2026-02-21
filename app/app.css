@@ -1,0 +1,592 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: "SHK Dzeragir";
+  src: url("/fonts/SHK_Dzeragir.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@theme {
+  --font-sans: "Parisienne", "Noto Serif Armenian", ui-serif, Georgia, serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-display: "Playfair Display", "Noto Serif Armenian", ui-serif, Georgia, serif;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  font-family: var(--font-sans);
+  color: #f7f4ef;
+}
+
+.app-shell {
+  position: relative;
+  min-height: 100dvh;
+  overflow-x: hidden;
+}
+
+.app-fixed-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+}
+
+.app-fixed-bg video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.06);
+  filter: saturate(1.15) contrast(1.08);
+}
+
+.app-bg-tint {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(circle at 50% 22%, rgba(252, 236, 199, 0.16), transparent 60%),
+    linear-gradient(180deg, rgba(17, 12, 9, 0.12), rgba(10, 8, 7, 0.66));
+}
+
+.app-content {
+  position: relative;
+  min-height: 100dvh;
+}
+
+.invitation-page {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2.4rem;
+  padding: 1.2rem;
+  position: relative;
+}
+
+.invitation-page.lang-en {
+  font-family: "Parisienne", var(--font-sans);
+}
+
+.invitation-page.lang-hy {
+  font-family: "SHK Dzeragir", "Noto Serif Armenian", serif;
+}
+
+.top-logo-slot {
+  width: 200px;
+  height: 200px;
+  margin: 160px auto 0;
+  display: grid;
+  place-items: center;
+}
+
+.top-logo-image {
+  position: relative;
+  object-fit: cover;
+  border-radius: 50%;
+  clip-path: circle(50% at 50% 50%);
+  display: block;
+  background: transparent;
+  filter: drop-shadow(0 12px 30px rgba(0, 0, 0, 0.26));
+}
+
+.language-switcher {
+  position: fixed;
+  top: 1.1rem;
+  right: 1.1rem;
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.flag-button {
+  width: 2.7rem;
+  height: 2.7rem;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(255, 241, 213, 0.35);
+  background: rgba(15, 10, 8, 0.56);
+  color: inherit;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.28);
+  padding: 0;
+  overflow: hidden;
+}
+
+.flag-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.flag-button-option {
+  animation: flag-dropdown 180ms ease-out;
+}
+
+.invitation-stage {
+  position: relative;
+  width: min(980px, 100%);
+  min-height: min(74dvh, 640px);
+}
+
+.invitation-reveal {
+  position: relative;
+  z-index: 1;
+  min-height: min(74dvh, 640px);
+  display: grid;
+  place-content: center;
+  text-align: center;
+  padding: 2rem;
+}
+
+.invitation-tagline {
+  margin: 0;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  font-size: clamp(0.72rem, 1.8vw, 0.95rem);
+  color: rgba(255, 239, 208, 0.9);
+}
+
+.invitation-title {
+  margin: 100px 0 0;
+  font-family: var(--font-sans);
+  font-size: clamp(2.35rem, 9vw, 5.7rem);
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  line-height: 0.95;
+  white-space: nowrap;
+  text-wrap: nowrap;
+}
+
+.invitation-title-en {
+  font-family: "Parisienne", cursive;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  line-height: 1.05;
+}
+
+.invitation-title-hy {
+  font-family: "SHK Dzeragir", "Noto Serif Armenian", serif;
+}
+
+.hero-photo-wrap {
+  position: relative;
+  width: min(340px, 80vw);
+  aspect-ratio: 1 / 1;
+  margin: 2.4rem auto 0.2rem;
+}
+
+.hero-photo-wrap-first {
+  margin-top: 110vh;
+}
+
+.hero-photo-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 0.4rem;
+  filter: saturate(0.82) contrast(0.95);
+  transform-origin: 50% 50%;
+  animation: sketch-sway 4.2s ease-in-out infinite;
+}
+
+.hero-photo-sketch {
+  position: absolute;
+  inset: -12px;
+  border: 6px solid rgba(255, 255, 255, 0.98);
+  border-radius: 0.8rem;
+  pointer-events: none;
+  z-index: 2;
+  transform-origin: 50% 50%;
+  animation: sketch-sway 4.2s ease-in-out infinite;
+}
+
+.hero-photo-sketch::before {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border: 3px solid rgba(255, 255, 255, 0.92);
+  border-radius: 0.9rem;
+  transform: rotate(1.2deg);
+}
+
+.invitation-subtitle {
+  margin: 1.75rem 0 0;
+  font-size: clamp(1.3rem, 3.8vw, 2rem);
+  color: rgba(255, 246, 227, 0.88);
+}
+
+
+.error-page {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 3.5rem 1.2rem;
+}
+
+.error-stack {
+  margin-top: 1rem;
+  padding: 0.9rem;
+  overflow-x: auto;
+  border-radius: 0.75rem;
+  background: rgba(10, 10, 10, 0.7);
+}
+
+.locations-section {
+  width: min(980px, 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 2.2rem;
+}
+
+.locations-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.1rem;
+}
+
+.location-card {
+  border-radius: 1.2rem;
+  overflow: hidden;
+  border: 1px solid rgba(255, 250, 235, 0.23);
+  background: rgba(20, 12, 9, 0.52);
+  box-shadow: 0 20px 48px rgba(6, 4, 3, 0.44);
+  backdrop-filter: blur(6px);
+}
+
+.location-image {
+  width: 100%;
+  height: 240px;
+  object-fit: cover;
+  display: block;
+}
+
+.location-content {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.location-name {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.location-note {
+  margin: 0;
+  color: rgba(255, 244, 220, 0.88);
+  font-size: 1rem;
+  line-height: 1.35;
+  font-family: var(--font-display);
+}
+
+.location-map-button {
+  width: fit-content;
+  text-decoration: none;
+  color: #2a1b12;
+  background: linear-gradient(180deg, #f3deab, #e8c67e);
+  border-radius: 999px;
+  padding: 0.56rem 0.9rem;
+  font-weight: 700;
+  font-size: 0.95rem;
+  transition: transform 180ms ease, filter 180ms ease;
+}
+
+.location-map-button:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.04);
+}
+
+.program-section {
+  width: min(70%, 900px);
+  position: relative;
+  margin-bottom: 2.6rem;
+}
+
+.mid-photo-section {
+  width: 100%;
+  display: grid;
+  place-items: center;
+  margin-top: -0.8rem;
+}
+
+.program-title {
+  margin: 0 0 1.2rem;
+  text-align: center;
+  font-family: var(--font-sans);
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+.program-track {
+  position: absolute;
+  top: 5.3rem;
+  bottom: 0.5rem;
+  left: 50%;
+  width: 2px;
+  transform: translateX(-50%);
+  background: linear-gradient(
+    180deg,
+    rgba(241, 216, 163, 0.7) 0%,
+    rgba(241, 216, 163, 0.2) 100%
+  );
+}
+
+.program-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  position: relative;
+  padding: 0.35rem 0;
+}
+
+.program-item {
+  width: 70%;
+  border-radius: 1.05rem;
+  border: 1px solid rgba(255, 248, 230, 0.28);
+  background: linear-gradient(
+    160deg,
+    rgba(47, 28, 20, 0.52) 0%,
+    rgba(23, 14, 10, 0.42) 100%
+  );
+  box-shadow:
+    0 14px 32px rgba(6, 3, 3, 0.34),
+    inset 0 1px 0 rgba(255, 245, 221, 0.13);
+  backdrop-filter: blur(8px);
+  padding: 0.95rem 1.1rem 1rem;
+}
+
+.program-item-left {
+  align-self: flex-start;
+}
+
+.program-item-right {
+  align-self: flex-end;
+}
+
+.program-time {
+  margin: 0.25rem 0 0;
+  color: rgba(244, 221, 175, 0.96);
+  letter-spacing: 0.05em;
+  font-family: var(--font-sans);
+  font-size: 1.35rem;
+  font-weight: 700;
+}
+
+.program-name-row {
+  display: flex;
+  align-items: center;
+  gap: 0.58rem;
+}
+
+.program-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 1.85rem;
+  height: 1.85rem;
+  border-radius: 999px;
+  background: rgba(252, 232, 184, 0.18);
+  font-size: 1rem;
+}
+
+.program-name {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.video-section {
+  width: min(860px, 92%);
+  margin: -0.3rem auto 2.3rem;
+}
+
+.video-player-shell {
+  border-radius: 1.25rem;
+  border: 1px solid rgba(255, 245, 220, 0.26);
+  background: rgba(24, 14, 10, 0.46);
+  backdrop-filter: blur(7px);
+  box-shadow:
+    0 18px 42px rgba(7, 3, 2, 0.36),
+    inset 0 1px 0 rgba(255, 248, 234, 0.12);
+  padding: 0.55rem;
+}
+
+.video-player {
+  width: 100%;
+  display: block;
+  border-radius: 0.95rem;
+  background: #090604;
+}
+
+.couple-message-section {
+  width: min(760px, 92%);
+  margin: -0.3rem auto 2.8rem;
+  padding: 1.4rem 1.5rem 1.6rem;
+  text-align: center;
+  border-radius: 1.2rem;
+  border: 1px solid rgba(255, 245, 220, 0.26);
+  background: rgba(24, 14, 10, 0.46);
+  backdrop-filter: blur(7px);
+  box-shadow:
+    0 18px 42px rgba(7, 3, 2, 0.36),
+    inset 0 1px 0 rgba(255, 248, 234, 0.12);
+}
+
+.couple-message-kicker {
+  margin: 0;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-size: 0.76rem;
+  color: rgba(246, 226, 181, 0.88);
+}
+
+.couple-message-text {
+  margin: 0.9rem 0 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.3rem, 3vw, 1.85rem);
+  line-height: 1.34;
+  font-weight: 600;
+  color: rgba(255, 247, 229, 0.95);
+  white-space: pre-line;
+}
+
+.couple-message-signature {
+  margin: 0.85rem 0 0;
+  font-family: var(--font-sans);
+  font-size: clamp(1.04rem, 2.6vw, 1.3rem);
+  font-weight: 700;
+  color: rgba(245, 218, 171, 0.92);
+}
+
+.couple-message-en .couple-message-kicker,
+.couple-message-en .couple-message-signature {
+  font-family: "Parisienne", cursive;
+}
+
+.couple-message-hy .couple-message-kicker,
+.couple-message-hy .couple-message-signature {
+  font-family: "SHK Dzeragir", "Noto Serif Armenian", serif;
+}
+
+@keyframes reveal-message {
+  0% {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes flag-dropdown {
+  0% {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes sketch-sway {
+  0% {
+    transform: rotate(-2deg);
+  }
+  50% {
+    transform: rotate(2deg);
+  }
+  100% {
+    transform: rotate(-2deg);
+  }
+}
+
+@media (max-width: 680px) {
+  .language-switcher {
+    top: 0.85rem;
+    right: 0.85rem;
+  }
+
+  .invitation-stage {
+    min-height: 70dvh;
+    border-radius: 1.2rem;
+  }
+
+  .invitation-reveal {
+    min-height: 70dvh;
+    padding: 1.4rem;
+  }
+
+  .invitation-title {
+    margin-top: 65px;
+  }
+
+  .hero-photo-wrap {
+    width: min(290px, 78vw);
+  }
+
+  .hero-photo-wrap-first {
+    margin-top: 60vh;
+  }
+
+  .locations-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .location-image {
+    height: 210px;
+  }
+
+  .program-track {
+    left: 0.6rem;
+    transform: none;
+    top: 5rem;
+  }
+
+  .program-section {
+    width: min(100%, 640px);
+  }
+
+  .program-item,
+  .program-item-left,
+  .program-item-right {
+    width: calc(100% - 1.7rem);
+    align-self: flex-end;
+  }
+
+  .couple-message-section {
+    width: min(94%, 620px);
+    padding: 1.15rem 1rem 1.25rem;
+  }
+
+  .video-section {
+    width: min(94%, 620px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .invitation-reveal {
+    animation: none;
+  }
+
+  .location-map-button {
+    transition: none;
+  }
+
+  .hero-photo-sketch {
+    animation: none;
+  }
+
+  .hero-photo-image {
+    animation: none;
+  }
+}
