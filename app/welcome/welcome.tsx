@@ -5,15 +5,16 @@ type Language = "hy" | "en";
 
 const i18n = {
   hy: {
-    coupleNames: "Արթուր և Լիանա",
+    coupleNames: "Արթուր և Լիաննա",
     invitationTagline: "Դուք հրավիրված եք",
-    invitationSubtitle: "Սիրո, ուրախության և տոնի օր",
+    introMessage: "Սիրով հրավիրում ենք Ձեզ մեր հարսանյաց տոնին՝ մեր գեղեցիկ օրվա վայելքին",
+    invitationSubtitle: "Երկու սիրտ մեկ ամբողջություն",
     programTitle: "Օրվա ծրագիրը",
     videoFallbackText: "Ձեր դիտարկիչը չի աջակցում տեսանյութի նվագարկմանը։",
     coupleMessageTitle: "Ուղերձ զույգից",
     coupleMessageText:
-      "Արթուր և Լիաննա երկու սրտեր միավորվեցին մի հիասքանչ սիրով✨\n\nՍիրով հրավիրում ենք Ձեզ մեր հարսանյաց տոնին՝ մեր սիրուն օրվա վայելքին",
-    coupleMessageSignature: "Սիրով՝ Արթուր և Լիանա",
+      "Արթուր և Լիաննա երկու սրտեր միավորվեցին մի հիասքանչ սիրով✨\n",
+    coupleMessageSignature: "Սիրով՝ Արթուր և Լիաննա",
     topPhotoAlt: "Հարսանեկան գլխավոր լուսանկար",
     memoryPhotoAlt: "Հարսանեկան հիշողության լուսանկար",
     mapButton: "Բացել Google Maps-ում",
@@ -27,19 +28,20 @@ const i18n = {
     ],
     programItems: [
       { title: "Եկեղեցի", time: "15:00", align: "right", icon: "church" },
-      { title: "Կոկտեյլ", time: "17:00", align: "right", icon: "cocktail" },
+      { title: "Հյուրերի ընդունելություն", time: "17:00", align: "right", icon: "cocktail" },
       { title: "Հարսանյաց սրահ", time: "18:00", align: "left", icon: "restaurant" },
     ],
   },
   en: {
     coupleNames: "Artur & Lianna",
     invitationTagline: "You are invited",
-    invitationSubtitle: "A day of love, joy, and celebration",
+    introMessage: "With love, we invite you to our wedding celebration to enjoy the beauty of our special day",
+    invitationSubtitle: "Two hearts, one whole",
     programTitle: "Program Of The Day",
     videoFallbackText: "Your browser does not support video playback.",
     coupleMessageTitle: "A Message From Us",
     coupleMessageText:
-      "Artur and Lianna, two hearts united in a beautiful love ✨\n\nWith love, we invite you to our wedding celebration to enjoy the beauty of our special day.",
+      "Artur and Lianna, two hearts united in beautiful love ✨\n",
     coupleMessageSignature: "With love, Artur & Lianna",
     topPhotoAlt: "Main wedding photo",
     memoryPhotoAlt: "Wedding memory photo",
@@ -54,7 +56,7 @@ const i18n = {
     ],
     programItems: [
       { title: "Church", time: "15:00", align: "right", icon: "church" },
-      { title: "Cocktail", time: "17:00", align: "right", icon: "cocktail" },
+      { title: "Reception of guests", time: "17:00", align: "right", icon: "cocktail" },
       { title: "Wedding Hall", time: "18:00", align: "left", icon: "restaurant" },
     ],
   },
@@ -227,12 +229,12 @@ export function Welcome() {
         >
           <div className="top-logo-slot" aria-hidden="true">
             <motion.img
-              src="/logo.jpg"
+              src="/logo.png"
               alt="Wedding logo"
               className="top-logo-image"
               initial={{ opacity: 0, width: 0, height: 0 }}
               animate={{ opacity: 1, width: 200, height: 200 }}
-              transition={{ duration: 1, delay: 3, ease: "easeOut" }}
+              transition={{ duration: 1, delay: 2, ease: "easeOut" }}
             />
           </div>
           <h1
@@ -243,6 +245,18 @@ export function Welcome() {
           >
             {activeLanguage.coupleNames}
           </h1>
+          <h2 className="invitation-date invitation-date-en">
+            11.04.2026
+          </h2>
+
+          <h3 className={`invitation-intro-message ${language === "en"
+              ? "invitation-message-en"
+              : "invitation-message-hy"
+              }`}
+          >
+            {activeLanguage.introMessage}
+          </h3>
+
           <div className="hero-photo-wrap hero-photo-wrap-first" aria-label="Wedding preview image">
             <div className="hero-photo-sketch" aria-hidden="true" />
             <img
