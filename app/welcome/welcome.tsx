@@ -160,8 +160,25 @@ export function Welcome() {
   const [language, setLanguage] = useState<Language>("hy");
   const [isLangMenuOpen, setIsLangMenuOpen] = useState(false);
   const languageMenuRef = useRef<HTMLDivElement | null>(null);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
   const activeLanguage = i18n[language];
   const otherLanguage: Language = language === "hy" ? "en" : "hy";
+
+  // Keep the video seamlessly looping by seeking to 0 slightly before
+  // the natural loop boundary. This avoids the brief blank/black frame
+  // some encodings show when the native `loop` causes a short gap.
+  const handleVideoTimeUpdate = () => {
+    const v = videoRef.current;
+    if (!v || !v.duration || v.seeking) return;
+    const timeLeft = v.duration - v.currentTime;
+    if (timeLeft <= 0.12) {
+      try {
+        v.currentTime = 0;
+        // calling play again helps some browsers continue without gap
+        v.play().catch(() => {});
+      } catch (e) {}
+    }
+  };
 
   useEffect(() => {
     const onClickOutside = (event: MouseEvent) => {
@@ -431,12 +448,14 @@ export function Welcome() {
       >
         <div className="video-player-shell">
           <video
+            ref={videoRef}
             className="video-player"
             autoPlay
             loop
             muted
             playsInline
-            preload="metadata"
+            preload="auto"
+            onTimeUpdate={handleVideoTimeUpdate}
             disablePictureInPicture
             controlsList="nodownload nofullscreen noremoteplayback"
           >
