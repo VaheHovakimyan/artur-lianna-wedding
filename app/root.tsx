@@ -68,6 +68,20 @@ export default function App() {
     };
   }, []);
 
+  // Workaround for Safari showing a brief blank frame when native loop restarts.
+  // Seek to start slightly before the end and resume playback.
+  const handleVideoTimeUpdate = () => {
+    const v = videoRef.current;
+    if (!v || !v.duration || v.seeking) return;
+    const timeLeft = v.duration - v.currentTime;
+    if (timeLeft <= 0.15) {
+      try {
+        v.currentTime = 0;
+        v.play().catch(() => {});
+      } catch (e) {}
+    }
+  };
+
   return (
     <div className="app-shell">
       <div className="app-fixed-bg" aria-hidden="true">
@@ -85,6 +99,7 @@ export default function App() {
           muted
           playsInline
           preload="auto"
+          onTimeUpdate={handleVideoTimeUpdate}
           className={videoReady ? "video-visible" : "video-hidden"}
         >
           <source src={backgroundVideoSrc} type="video/mp4" />
