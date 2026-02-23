@@ -73,7 +73,7 @@ export default function App() {
       <div className="app-fixed-bg" aria-hidden="true">
         {!videoReady && (
           <img
-            src="/fallback-video-image.jpg"
+            src="/assets/fallback-video-image.jpg"
             alt=""
             className="video-poster"
           />
@@ -123,7 +123,7 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
     <div className="app-shell">
       <div className="app-fixed-bg" aria-hidden="true">
         <img
-          src="/fallback-video-image.jpg"
+          src="/assets/fallback-video-image.jpg"
           alt=""
           className="video-poster"
         />
