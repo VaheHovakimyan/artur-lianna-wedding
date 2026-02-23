@@ -450,6 +450,59 @@ body {
     inset 0 1px 0 rgba(255, 248, 234, 0.12);
 }
 
+.countdown {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 80px;
+  font-size: clamp(1rem, 2.5vw, 1.4rem);
+}
+
+.countdown.finished {
+  font-size: clamp(1.2rem, 3vw, 1.6rem);
+  color: rgba(255, 247, 229, 0.92);
+  font-weight: 600;
+}
+
+.countdown-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 60px;
+}
+
+.countdown-value {
+  font-weight: 700;
+  font-size: clamp(1.6rem, 4vw, 2.2rem);
+  line-height: 1;
+  color: rgba(255, 247, 229, 0.95);
+}
+
+.countdown-label {
+  color: rgba(246, 226, 181, 0.88);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-top: 4px;
+}
+
+.countdown-label-hy {
+  font-size: clamp(0.85rem, 2.2vw, 1.1rem);
+  font-family: "SHK Dzeragir", "Noto Serif Armenian", serif;
+}
+
+.countdown-label-en {
+  font-size: clamp(0.65rem, 1.8vw, 0.85rem);
+  font-family: var(--font-display);
+}
+
+.countdown-sep {
+  font-weight: 600;
+  color: rgba(245, 218, 171, 0.75);
+  line-height: 1;
+}
+
 .couple-message-kicker {
   margin: 0;
   letter-spacing: 0.15em;

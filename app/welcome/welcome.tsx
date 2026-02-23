@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
+import Countdown from "./Countdown";
 
 type Language = "hy" | "en";
 
@@ -329,6 +330,8 @@ export function Welcome() {
           >
             {activeLanguage.introMessage}
           </h3>
+
+          <Countdown language={language} />
 
           <div className="hero-photo-wrap hero-photo-wrap-first" aria-label="Wedding preview image">
             <div className="hero-photo-sketch" aria-hidden="true" />
