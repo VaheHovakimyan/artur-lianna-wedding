@@ -2,7 +2,7 @@ import type { Route } from "./+types/home";
 import { Welcome } from "../welcome/welcome";
 
 export function meta({}: Route.MetaArgs) {
- const SITE_URL = import.meta.env.VITE_SITE_URL || "http://localhost:5173";
+ const SITE_URL = import.meta.env.VITE_SITE_URL || "https://artur-lianna-wedding.vercel.app";
   const imagePath = "/assets/pair/pair_1.jpg";
   const imageUrl = SITE_URL.replace(/\/$/, "") + imagePath;
 

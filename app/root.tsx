@@ -7,6 +7,7 @@ import {
   ScrollRestoration,
 } from "react-router";
 import { motion } from "framer-motion";
+import { useRef, useState, useEffect } from "react";
 
 import type { Route } from "./+types/root";
 import "./app.css";
@@ -45,10 +46,47 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [videoReady, setVideoReady] = useState(false);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const handleCanPlay = () => {
+      setVideoReady(true);
+    };
+
+    video.addEventListener("canplay", handleCanPlay);
+    // Check if already loaded
+    if (video.readyState >= 3) {
+      setVideoReady(true);
+    }
+
+    return () => {
+      video.removeEventListener("canplay", handleCanPlay);
+    };
+  }, []);
+
   return (
     <div className="app-shell">
       <div className="app-fixed-bg" aria-hidden="true">
-        <video autoPlay loop muted playsInline preload="metadata">
+        {!videoReady && (
+          <img
+            src="/fallback-video-image.jpg"
+            alt=""
+            className="video-poster"
+          />
+        )}
+        <video
+          ref={videoRef}
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="auto"
+          className={videoReady ? "video-visible" : "video-hidden"}
+        >
           <source src={backgroundVideoSrc} type="video/mp4" />
         </video>
       </div>
@@ -84,7 +122,12 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   return (
     <div className="app-shell">
       <div className="app-fixed-bg" aria-hidden="true">
-        <video autoPlay loop muted playsInline preload="metadata">
+        <img
+          src="/fallback-video-image.jpg"
+          alt=""
+          className="video-poster"
+        />
+        <video autoPlay loop muted playsInline preload="auto">
           <source src={backgroundVideoSrc} type="video/mp4" />
         </video>
       </div>
