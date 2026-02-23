@@ -18,18 +18,17 @@ const i18n = {
     topPhotoAlt: "Հարսանեկան գլխավոր լուսանկար",
     memoryPhotoAlt: "Հարսանեկան հիշողության լուսանկար",
     mapButton: "Բացել Google Maps-ում",
-    locationAltRestaurant: "Ռեստորան հարսանեկան տոնակատարության համար",
     locationAltChurch: "Եկեղեցի հարսանեկան արարողության համար",
+    locationAltRestaurant: "Ռեստորան հարսանեկան տոնակատարության համար",
     churchLocationNote:
       "Մեր ծնողների օրհնությամբ, Աստծո կամքով՝ մենք դառնում ենք գեղեցիկ ընտանիք։",
     locations: [
-      { title: "Հարսանյաց սրահ " },
       { title: "Եկեղեցի" },
+      { title: "Հարսանյաց սրահ " },
     ],
     programItems: [
       { title: "Եկեղեցի", time: "15:00", align: "right", icon: "church" },
-      { title: "Հյուրերի ընդունելություն", time: "17:00", align: "right", icon: "cocktail" },
-      { title: "Հարսանյաց սրահ", time: "18:00", align: "left", icon: "restaurant" },
+      { title: "Հարսանյաց սրահ", time: "17:00", align: "left", icon: "restaurant" },
     ],
   },
   en: {
@@ -51,13 +50,12 @@ const i18n = {
     churchLocationNote:
       "With our parents' blessing and by God's will, we are becoming a beautiful family.",
     locations: [
+       { title: "Ceremony Church" },
       { title: "Wedding Hall" },
-      { title: "Ceremony Church" },
     ],
     programItems: [
       { title: "Church", time: "15:00", align: "right", icon: "church" },
-      { title: "Reception of guests", time: "17:00", align: "right", icon: "cocktail" },
-      { title: "Wedding Hall", time: "18:00", align: "left", icon: "restaurant" },
+      { title: "Wedding Hall", time: "17:00", align: "left", icon: "restaurant" },
     ],
   },
 } as const;
@@ -76,12 +74,12 @@ const languageOptions = {
 
 const locationMedia = [
   {
-    image: "/assets/locations/restaurant.jpg",
-    mapUrl: "https://maps.app.goo.gl/X422BEJA8RmTjCHi6",
-  },
-  {
     image: "/assets/locations/church.jpg",
     mapUrl: "https://maps.app.goo.gl/E8MxByJSJTqZuGmj7",
+  },
+  {
+    image: "/assets/locations/restaurant.jpg",
+    mapUrl: "https://maps.app.goo.gl/X422BEJA8RmTjCHi6",
   },
 ] as const;
 
@@ -177,6 +175,64 @@ export function Welcome() {
 
     document.addEventListener("mousedown", onClickOutside);
     return () => document.removeEventListener("mousedown", onClickOutside);
+  }, []);
+
+  useEffect(() => {
+    let sound: any = null;
+    let onScroll: (() => void) | null = null;
+    let played = false;
+    let cancelled = false;
+
+    import("howler")
+      .then(({ Howl }) => {
+        if (cancelled) return;
+
+        // primary source is wedding-song.mp3; fallback to bride.mp4 if load fails
+        sound = new Howl({
+          src: ["/assets/wedding-song.mp3"],
+          html5: true,
+          preload: true,
+          volume: 0.9,
+          onloaderror: () => {
+            // unload failed sound and try fallback
+            try {
+              sound && sound.unload && sound.unload();
+            } catch (e) {}
+            sound = new Howl({
+              src: ["/assets/wedding-song.mp3"],
+              html5: true,
+              preload: true,
+              volume: 0.9,
+            });
+          },
+        });
+
+        onScroll = () => {
+          if (window.scrollY >= 1 && !played) {
+            played = true;
+            try {
+              sound && sound.play && sound.play();
+            } catch (e) {
+              // play may be blocked by autoplay policies
+            }
+            if (onScroll) window.removeEventListener("scroll", onScroll);
+          }
+        };
+
+        window.addEventListener("scroll", onScroll, { passive: true });
+        if (window.scrollY >= 1) onScroll();
+      })
+      .catch(() => {
+        // ignore
+      });
+
+    return () => {
+      cancelled = true;
+      if (onScroll) window.removeEventListener("scroll", onScroll);
+      try {
+        sound && sound.unload && sound.unload();
+      } catch (e) {}
+    };
   }, []);
 
   return (
@@ -291,16 +347,16 @@ export function Welcome() {
                 src={location.image}
                 alt={
                   index === 0
-                    ? activeLanguage.locationAltRestaurant
-                    : activeLanguage.locationAltChurch
+                    ? activeLanguage.locationAltChurch
+                    : activeLanguage.locationAltRestaurant
                 }
                 className="location-image"
               />
               <div className="location-content">
                 <h3 className="location-name">{activeLanguage.locations[index].title}</h3>
-                {index === 1 && (
+                {index === 0 && (
                   <p className="location-note">{activeLanguage.churchLocationNote}</p>
-                )}
+                )} 
                 <a
                   href={location.mapUrl}
                   target="_blank"
