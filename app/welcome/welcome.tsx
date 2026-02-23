@@ -199,7 +199,7 @@ export function Welcome() {
               sound && sound.unload && sound.unload();
             } catch (e) {}
             sound = new Howl({
-              src: ["/assets/wedding-song.mp3"],
+              src: ['/assets/wedding-song.mp3'],
               html5: true,
               preload: true,
               volume: 0.9,
