@@ -7,12 +7,11 @@ import {
   ScrollRestoration,
 } from "react-router";
 import { motion } from "framer-motion";
-import { useRef, useState, useEffect } from "react";
 
 import type { Route } from "./+types/root";
 import "./app.css";
 
-const backgroundVideoSrc = "/welcome-bg.mp4?v=20260220";
+const backgroundImageSrc = "/assets/background-image.jpg";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -46,64 +45,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const [videoReady, setVideoReady] = useState(false);
-
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-
-    const handleCanPlay = () => {
-      setVideoReady(true);
-    };
-
-    video.addEventListener("canplay", handleCanPlay);
-    // Check if already loaded
-    if (video.readyState >= 3) {
-      setVideoReady(true);
-    }
-
-    return () => {
-      video.removeEventListener("canplay", handleCanPlay);
-    };
-  }, []);
-
-  // Workaround for Safari showing a brief blank frame when native loop restarts.
-  // Seek to start slightly before the end and resume playback.
-  const handleVideoTimeUpdate = () => {
-    const v = videoRef.current;
-    if (!v || !v.duration || v.seeking) return;
-    const timeLeft = v.duration - v.currentTime;
-    if (timeLeft <= 0.15) {
-      try {
-        v.currentTime = 0;
-        v.play().catch(() => {});
-      } catch (e) {}
-    }
-  };
-
   return (
     <div className="app-shell">
       <div className="app-fixed-bg" aria-hidden="true">
-        {!videoReady && (
-          <img
-            src="/assets/fallback-video-image.jpg"
-            alt=""
-            className="video-poster"
-          />
-        )}
-        <video
-          ref={videoRef}
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="auto"
-          onTimeUpdate={handleVideoTimeUpdate}
-          className={videoReady ? "video-visible" : "video-hidden"}
-        >
-          <source src={backgroundVideoSrc} type="video/mp4" />
-        </video>
+        <img src={backgroundImageSrc} alt="" className="video-poster" />
       </div>
       <div className="app-bg-tint" aria-hidden="true" />
       <motion.div
@@ -137,14 +82,7 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   return (
     <div className="app-shell">
       <div className="app-fixed-bg" aria-hidden="true">
-        <img
-          src="/assets/fallback-video-image.jpg"
-          alt=""
-          className="video-poster"
-        />
-        <video autoPlay loop muted playsInline preload="auto">
-          <source src={backgroundVideoSrc} type="video/mp4" />
-        </video>
+        <img src={backgroundImageSrc} alt="" className="video-poster" />
       </div>
       <div className="app-bg-tint" aria-hidden="true" />
       <motion.main
